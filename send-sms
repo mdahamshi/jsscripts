@@ -1,0 +1,6 @@
+#!/usr/bin/env node
+
+var PushBullet = require('pushbullet');
+var fs = require('fs');
+
+var pusher = new PushBullet(
