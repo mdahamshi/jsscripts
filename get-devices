@@ -1,0 +1,26 @@
+#!/usr/bin/env nodejs
+
+var PushBullet = require('pushbullet');
+var fs = require('fs');
+var mmdConstants = require('/data/aes/constants').pushCons;
+var pusher = new PushBullet(mmdConstants.pushKey);
+pusher.devices(function(err, res){
+    if(err){
+        console.log(err);
+        return;
+    }
+    console.log(res.devices);
+    // res.devices.forEach((element) => {
+    //     console.log(element.iden);
+    //     if(mmdConstants.devices.indexOf(element.iden) == -1)
+    //         pusher.deleteDevice(element.iden, function(err, res){
+    //             if(err){
+    //                 console.log(err);
+    //                 return;
+    //             }
+    //             console.log(res);
+    //         })
+    // });
+});
+
+

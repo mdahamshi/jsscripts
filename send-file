@@ -1,0 +1,26 @@
+#!/usr/bin/env nodejs
+
+var PushBullet = require('pushbullet');
+var fs = require('fs');
+var mmdConstants = require('/data/aes/constants').pushCons;
+var pusher = new PushBullet(mmdConstants.pushKey);
+
+var file = process.argv[2];
+var device = process.argv[3] ? process.argv[3] : 'phone';
+if(process.argv[2] == '?'){
+    console.log('usage:\nsend-file <path to file> <device>');
+    return;    
+}
+if(file ){
+    pusher.file(mmdConstants[device], file, file, function(error, response) {
+        if(error){
+            console.log(error);
+            return;
+        }
+        // console.log(response);
+    });
+
+}else {
+    console.log('usage:\nsend-file <path to file> <device>');
+}
+

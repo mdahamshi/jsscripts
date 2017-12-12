@@ -1,6 +1,61 @@
-#!/usr/bin/env node
+#!/usr/bin/env nodejs
+
 
 var PushBullet = require('pushbullet');
 var fs = require('fs');
+var mmdConstants = require('/data/aes/constants').pushCons;
+var pusher = new PushBullet(mmdConstants.pushKey);
+// pusher.devices(function(err, res){
+//     if(err)
+//         return;
+//     console.log(res.devices);
+//     // res.devices.forEach((element) => {
+//     //     console.log(element.iden);
+//     //     if(mmdConstants.devices.indexOf(element.iden) == -1)
+//     //         pusher.deleteDevice(element.iden, function(err, res){
+//     //             if(err){
+//     //                 console.log(err);
+//     //                 return;
+//     //             }
+//     //             console.log(res);
+//     //         })
+//     // });
+// });
+// pusher.devices();
 
-var pusher = new PushBullet(
+var to = process.argv[2];
+var msg = process.argv[3];
+
+if(to == '?'){
+    console.log('usage:\nsend-sms <phone number> <message>');
+    return;    
+}
+if(to && msg){
+    if(isNaN(to)){
+        if(mmdConstants.contacts[to])
+            to = mmdConstants.contacts[to];
+        else{
+            console.log('please check the entered number',mmdConstants.contacts[to]);
+            return;
+        }
+    }else if(to.length != 10){
+        console.log('please check the entered number',to.length);
+        return;
+    }
+
+}
+else
+    console.log('usage:\nsend-sms <phone number> <message>');
+var options = {
+    source_user_iden: mmdConstants.phone.iden,              // The user iden of the user sending this message
+    target_device_iden: mmdConstants.phone.iden, // The iden of the device corresponding to the phone that should send the SMS
+    conversation_iden: to,       // Phone number to send the SMS to
+    message: msg                           // The SMS message to send
+};
+pusher.sendSMS(options, function(error, response) {
+    if(error){
+        console.log(error);
+        return;
+    }
+    // console.log(response);
+});
