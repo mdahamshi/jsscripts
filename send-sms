@@ -24,7 +24,7 @@ var pusher = new PushBullet(mmdConstants.pushKey);
 // pusher.devices();
 
 var to = process.argv[2];
-var msg = process.argv[3];
+var msg = process.argv[3] + "\nSent with 💛 by Robo  about.me/rdahamshi";
 
 if(to == '?'){
     console.log('usage:\nsend-sms <phone number> <message>');
